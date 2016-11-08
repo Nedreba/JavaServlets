@@ -1,17 +1,4 @@
-<%-- 
-    Document   : New_customer
-    Created on : Oct 24, 2016, 10:53:29 PM
-    Author     : Nedreba
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Titan Online Banking Application</title>
-    </head>
-    <body>
+<c:import url="header.html" />
         <div>New Customer</div>
         <p><i>${message}</i></p>
         <form action="NewCustomerServlet" method="POST">
@@ -34,5 +21,4 @@
             
             <input type="submit" value="Submit"><br>
         </form>
-
-</html>
+<c:import url="footer.jsp" />

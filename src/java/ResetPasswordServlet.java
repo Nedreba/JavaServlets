@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Nedreba
  */
-public class NewCustomerServlet extends HttpServlet {
+public class ResetPasswordServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +35,10 @@ public class NewCustomerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewCustomerServlet</title>");            
+            out.println("<title>Servlet ResetPasswordServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NewCustomerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ResetPasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -71,48 +71,24 @@ public class NewCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String inputFirstName = request.getParameter("firstName");
-        String inputLastName= request.getParameter("lastName");
-        String inputPhone = request.getParameter("phoneNumber");
-        String inputAddress = request.getParameter("address");
-        String inputCity = request.getParameter("city");
-        String inputState = request.getParameter("state");
-        String inputZipcode = request.getParameter("zipcode");
-        String inputEmail= request.getParameter("email");
-        String message;
-        String targetURL;
+        //Get Session
+        HttpSession session = request.getSession();
         
-        if(inputFirstName == null || inputFirstName.isEmpty() ||
-           inputLastName == null || inputLastName.isEmpty() ||
-           inputPhone == null || inputPhone.isEmpty() ||
-           inputAddress == null || inputAddress.isEmpty() ||
-           inputCity == null || inputCity.isEmpty() ||
-           inputState == null || inputState.isEmpty() ||
-           inputZipcode == null || inputZipcode.isEmpty() ||
-           inputEmail == null || inputEmail.isEmpty())
-        {
-            message = "Please fill out all text boxes";
-            targetURL = "/New_customer.jsp";
-            request.setAttribute("message", message);
-            getServletContext().getRequestDispatcher(targetURL).forward(request, response);
+        //Get User
+        User user = (User) session.getAttribute("user");
+        if (user ==null) {
+            user = new User();
         }
-        else
-        {
-            String tempUsername = (inputLastName + inputZipcode);
-          String tempPassword = "welcome1";
-          
-          User user = new User(inputFirstName, inputLastName, inputPhone, inputAddress,
-                  inputCity, inputState, inputZipcode, inputEmail, tempUsername,
-                  tempPassword);
-          
-          HttpSession session = request.getSession();
-          session.setAttribute("user", user);
-          
-            message = "";
-            targetURL = "/Success.jsp";
-            request.setAttribute("message", message);
-            getServletContext().getRequestDispatcher(targetURL).forward(request, response);
-        }
+        
+        //Change Password
+        user.setPassword(request.getParameter("password"));
+        
+        //Apply to session
+        session.setAttribute("user", user);
+        
+        //Redirect page
+        getServletContext().getRequestDispatcher("/Account_activity.jsp").forward(request, response);
+        
     }
 
     /**
